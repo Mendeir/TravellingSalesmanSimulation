@@ -7,7 +7,7 @@ public class Main {
         System.out.println("Hello I'm Carl");
         System.out.println("Hello I'm Dave");
         System.out.println("Ako si carl");
-
+        System.out.println("Test6");
         System.out.println("Test 4");
         System.out.println("Test 5");
     }
