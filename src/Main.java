@@ -1,14 +1,35 @@
+import java.awt.*;
 import java.sql.SQLOutput;
 
+import javax.swing.*;
+
 public class Main {
+
+
     public static void main(String[] args){
-        System.out.println("test 3");
-        System.out.println("Hello i'm MG");
-        System.out.println("Hello I'm Carl");
-        System.out.println("Hello I'm Dave");
-        System.out.println("Ako si carl");
-        System.out.println("Test6");
-        System.out.println("Test 4");
-        System.out.println("Test 5");
+
+        // ComboBox values
+        String [] matrixSize = {"3x3","4x4","5x5","6x6"};
+
+        // Instantiation of objects for GUI
+        JFrame frame = new JFrame("Traveling Salesman");
+        JComboBox boxSize = new JComboBox(matrixSize);
+
+
+
+        // frame design and measurement
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500,500);
+        frame.setLayout(new FlowLayout());
+
+        // Combobox design
+        frame.add(boxSize);
+        frame.pack();
+        boxSize.setBounds(100,20,200,25);
+        frame.setVisible(true);
+
+
+
+
     }
 }
