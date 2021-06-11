@@ -13,6 +13,7 @@ public class InputWindow extends JFrame implements ActionListener{
     JFrame frame = new JFrame("Traveling Salesman");
     JComboBox boxSize = new JComboBox(matrixSize);
     JPanel panel = new JPanel();
+    JTextField[][] txt;
     GridBagConstraints gbc = new GridBagConstraints();
 
     //Constructor
@@ -21,7 +22,7 @@ public class InputWindow extends JFrame implements ActionListener{
         // frame design and measurement
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(400,100,500,500);
-        //frame.setLayout(new GridBagLayout());
+        //panel.setLayout(new GridBagLayout());
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
@@ -42,8 +43,8 @@ public class InputWindow extends JFrame implements ActionListener{
 
         if(e.getSource() == boxSize)
         {
-            int row = 0;
-            int column = 0;
+            int row;
+            int column;
 
             // Get the user's wanted size form the comboBox
             String size  = (String) boxSize.getSelectedItem();
@@ -51,29 +52,32 @@ public class InputWindow extends JFrame implements ActionListener{
             String [] s = size.split("x");
             row = Integer.parseInt(s[0]);
             column = Integer.parseInt(s[1]);
+            gridLayout(row,column);
+        }
+    }
+    public void gridLayout(int row, int column){
+        txt = new JTextField[row][column];
+        panel.removeAll();
+        panel.revalidate();
+        frame.repaint();
 
-
-            JTextField[][] txt = new JTextField[row][column];
-
-            for(int i=0; i<row; i++) {
-                for (int j = 0; j < column; j++) {
-                    if (i != j) {
-                        txt[i][j] = new JTextField(2);
-                        gbc.gridx = i;
-                        gbc.gridy = j;
-                        panel.add(txt[i][j], gbc);
-                        txt[i][j].setHorizontalAlignment(JTextField.CENTER);
-                    } else {
-                        txt[i][j] = new JTextField("-", 2);
-                        gbc.gridx = i;
-                        gbc.gridy = j;
-                        panel.add(txt[i][j], gbc);
-                        txt[i][j].setHorizontalAlignment(JTextField.CENTER);
-                        txt[i][j].setEditable(false);
-                    }
+        for(int i=0; i<row; i++) {
+            for (int j = 0; j < column; j++) {
+                if (i != j) {
+                    txt[i][j] = new JTextField(3);
+                    gbc.gridx = i;
+                    gbc.gridy = j;
+                    panel.add(txt[i][j], gbc);
+                    txt[i][j].setHorizontalAlignment(JTextField.CENTER);
+                } else {
+                    txt[i][j] = new JTextField("-", 3);
+                    gbc.gridx = i;
+                    gbc.gridy = j;
+                    panel.add(txt[i][j], gbc);
+                    txt[i][j].setHorizontalAlignment(JTextField.CENTER);
+                    txt[i][j].setEditable(false);
                 }
             }
-
         }
     }
 }
