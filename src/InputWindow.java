@@ -20,9 +20,9 @@ public class InputWindow extends JFrame implements ActionListener{
     JButton right = new JButton(">>");
     JButton left = new JButton("<<");
     JTextField[][] txt;
-    JButton [][] box;
+    //JButton [][] box;
+    JLabel[][] labels;
     GridBagConstraints gbc = new GridBagConstraints();
-    GridBagLayout gbl = new GridBagLayout();
 
 
     //Constructor
@@ -73,10 +73,6 @@ public class InputWindow extends JFrame implements ActionListener{
         //right button action
         if(e.getSource() == right)
         {
-
-            panel.removeAll();
-            panel.revalidate();
-            frame.repaint();
             values = new int[row][column];
             // Get all value on each textFields
             for(i = 0;i < row;i++){
@@ -90,7 +86,7 @@ public class InputWindow extends JFrame implements ActionListener{
                     }
                 }
             }
-            //nextButton(row,column);
+            nextButton(values);
         }
 
         //left button action
@@ -129,18 +125,32 @@ public class InputWindow extends JFrame implements ActionListener{
         }
     }
 
-    public void nextButton(int row,int column)
+    // next or right button action
+    public void nextButton(int val[][])
     {
-
-        /*
+        panel.removeAll();
+        panel.revalidate();
+        frame.repaint();
+        labels = new JLabel[row][column];
         for(i=0;i<row;i++){
             for(j=0;j<column;j++){
                 if(i != j)
                 {
+                    labels[i][j] = new JLabel(Integer.toString(values[i][j] + 1));
+                    gbc.gridx = i;
+                    gbc.gridy = j;
+                    panel.add(labels[i][j],gbc);
+                    labels[i][j].setHorizontalAlignment(JLabel.CENTER);
+                }else
+                {
+                    labels[i][j] = new JLabel("-1");
+                    gbc.gridx = i;
+                    gbc.gridy = j;
+                    panel.add(labels[i][j],gbc);
 
                 }
             }
         }
-        */
+
     }
 }
