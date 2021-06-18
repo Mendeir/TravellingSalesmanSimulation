@@ -6,6 +6,5 @@ public class Main {
 
         //Calling the InputWindow class for Graphical User Interface
         InputWindow window = new InputWindow();
-
     }
 }
