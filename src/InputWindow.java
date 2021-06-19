@@ -2,21 +2,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
+
 
 public class InputWindow extends JFrame implements ActionListener{
+
+    guiAlgo process = new guiAlgo();
 
     // array declarations
     String [] matrixSize = {"3x3","4x4","5x5","6x6"};
     String[] letters = {"a", "b", "c", "d", "e", "f"};
 
-    ListIterator <Integer> lister = null;
-    List <Integer> list = new ArrayList<Integer>();
-
-    int[] test;
     int [][] givenMatrix;
     int [][] processMatrix;
     int [][] exponents;
@@ -38,6 +34,8 @@ public class InputWindow extends JFrame implements ActionListener{
     JButton left = new JButton("<<");
     JLabel steps = new JLabel("Enter numbers in designated rows and columns:");
 
+    JLabel cost;
+    JLabel path;
     JTextField[][] txt;
     JLabel[][] labels;
     GridBagConstraints gbc = new GridBagConstraints();
@@ -83,7 +81,7 @@ public class InputWindow extends JFrame implements ActionListener{
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        guiAlgo process = new guiAlgo();
+
 
         // box size action
         if (e.getSource() == boxSize) {
@@ -106,7 +104,7 @@ public class InputWindow extends JFrame implements ActionListener{
             exponents = new int[row][column];
             markedPoints = new boolean[row][column];
             checker = new int[row][column];
-            test = new int[row*column];
+
 
             // Get all value on each textFields
             for (i = 0; i < row; i++) {
@@ -142,20 +140,12 @@ public class InputWindow extends JFrame implements ActionListener{
                 } else if (buttonCount == 2 || buttonCount == 5 || buttonCount == 9 || buttonCount == 13 || buttonCount == 17 || buttonCount == 21) {
                     process.rowMinimization(processMatrix);
 
-                    panel.removeAll();
-                    panel.revalidate();
-                    frame.repaint();
-
                     steps.setText("Row Minimization");
                     steps.setBounds(200, 100, 400, 50);
 
                     nextButton(processMatrix);
                 } else if (buttonCount == 3 || buttonCount == 6 || buttonCount == 10 || buttonCount == 14 || buttonCount == 18 || buttonCount == 22) {
                     process.columnMinimization(processMatrix);
-
-                    panel.removeAll();
-                    panel.revalidate();
-                    frame.repaint();
 
                     steps.setText("Column Minimization");
                     steps.setBounds(195, 100, 400, 50);
@@ -164,10 +154,6 @@ public class InputWindow extends JFrame implements ActionListener{
                 } else if (buttonCount == 4 || buttonCount == 7 || buttonCount == 11 || buttonCount == 15 || buttonCount == 19 || buttonCount == 23) {
                     process.calculatePenalty(processMatrix, exponents);
 
-                    panel.removeAll();
-                    panel.revalidate();
-                    frame.repaint();
-
                     steps.setText("Penalty");
                     steps.setBounds(225, 100, 400, 50);
 
@@ -175,24 +161,12 @@ public class InputWindow extends JFrame implements ActionListener{
                 } else {
                     process.reduceMatrix(exponents, markedPoints, processMatrix);
 
-                    panel.removeAll();
-                    panel.revalidate();
-                    frame.repaint();
-
                     steps.setText("Reduce Matrix");
                     steps.setBounds(205, 100, 400, 50);
 
                     nextButton(processMatrix);
                 }
-                process.calculateTotalCost(markedPoints, processMatrix);
-                process.calculatePath(letters, markedPoints);
-
-                panel.removeAll();
-                panel.revalidate();
-                frame.repaint();
-
-                //nextButton(processMatrix);
-
+                    displayCost();
 
             }
 
@@ -257,6 +231,7 @@ public class InputWindow extends JFrame implements ActionListener{
         panel.removeAll();
         panel.revalidate();
         frame.repaint();
+
         labels = new JLabel[row][column];
         for(i=0;i<row;i++){
             for(j=0;j<column;j++){
@@ -281,7 +256,26 @@ public class InputWindow extends JFrame implements ActionListener{
 
     }
 
-    public void displayPathCost(){
+    public void displayCost(){
+        panel.removeAll();
+        panel.revalidate();
+        frame.repaint();
+
+        cost = new JLabel(process.calculateTotalCost(markedPoints, givenMatrix));
+        path = new JLabel(process.calculatePath(letters, markedPoints));
+
+        path.setFont(new Font("Arial",Font.BOLD,25));
+        cost.setFont(new Font("Arial",Font.BOLD,25));
+
+        gbc.gridx =0;
+        gbc.gridy =0;
+        panel.add(cost,gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(path,gbc);
+
 
     }
+
 }
