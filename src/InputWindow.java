@@ -2,7 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 import java.util.*;
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 
 public class InputWindow extends JFrame implements ActionListener{
@@ -124,51 +128,26 @@ public class InputWindow extends JFrame implements ActionListener{
                     }
                 }
             }
+            process.deleteResultsFile();
+            while (!Arrays.deepEquals(processMatrix,checker)) {
+                System.out.println("Row Minimization");
+                process.rowMinimization(processMatrix);
+                process.storeResultsToFile("Row Minimization",processMatrix);
+
+                System.out.println("Column Minimization");
+                process.columnMinimization(processMatrix);
+                process.storeResultsToFile("Column Minimization", processMatrix);
+
+                System.out.println("Reduce Matrix");
+                process.calculatePenalty(processMatrix, exponents);
+                process.reduceMatrix(exponents,markedPoints, processMatrix);
+                process.storeResultsToFile("Reduce Matrix", processMatrix);
+            }
         }
 
         //right button action
         if (e.getSource() == right) {
-            while (!Arrays.deepEquals(processMatrix,checker)) {
-                buttonCount++;
-                if (buttonCount == 1) {
 
-                    steps.setText("Travelling Salesman");
-                    steps.setBounds(190, 100, 400, 50);
-
-                    nextButton(processMatrix);
-
-                } else if (buttonCount == 2 || buttonCount == 5 || buttonCount == 9 || buttonCount == 13 || buttonCount == 17 || buttonCount == 21) {
-                    process.rowMinimization(processMatrix);
-
-                    steps.setText("Row Minimization");
-                    steps.setBounds(200, 100, 400, 50);
-
-                    nextButton(processMatrix);
-                } else if (buttonCount == 3 || buttonCount == 6 || buttonCount == 10 || buttonCount == 14 || buttonCount == 18 || buttonCount == 22) {
-                    process.columnMinimization(processMatrix);
-
-                    steps.setText("Column Minimization");
-                    steps.setBounds(195, 100, 400, 50);
-
-                    nextButton(processMatrix);
-                } else if (buttonCount == 4 || buttonCount == 7 || buttonCount == 11 || buttonCount == 15 || buttonCount == 19 || buttonCount == 23) {
-                    process.calculatePenalty(processMatrix, exponents);
-
-                    steps.setText("Penalty");
-                    steps.setBounds(225, 100, 400, 50);
-
-                    nextButton(processMatrix);
-                } else {
-                    process.reduceMatrix(exponents, markedPoints, processMatrix);
-
-                    steps.setText("Reduce Matrix");
-                    steps.setBounds(205, 100, 400, 50);
-
-                    nextButton(processMatrix);
-                }
-                    displayCost();
-
-            }
 
         }
 
@@ -176,26 +155,10 @@ public class InputWindow extends JFrame implements ActionListener{
         if (e.getSource() == left) {
 
 
-            if (buttonCount == 1 ){
 
-                panel.removeAll();
-                panel.revalidate();
-                frame.repaint();
-            } else if (buttonCount == 2 || buttonCount == 5 || buttonCount == 9 || buttonCount == 13 || buttonCount == 17 || buttonCount == 21) {
-                panel.removeAll();
-                panel.revalidate();
-                frame.repaint();
-            }else if (buttonCount == 3 || buttonCount == 7 || buttonCount == 10 || buttonCount == 14 || buttonCount == 18 || buttonCount == 22) {
-                panel.removeAll();
-                panel.revalidate();
-                frame.repaint();
-            }else if (buttonCount == 4 || buttonCount == 8 || buttonCount == 11 || buttonCount == 15 || buttonCount == 19 || buttonCount == 23){
-                panel.removeAll();
-                panel.revalidate();
-                frame.repaint();
             }
         }
-    }
+
     // layout for combo box options
     public void gridLayout(int row, int column){
         txt = new JTextField[row][column];
@@ -226,7 +189,7 @@ public class InputWindow extends JFrame implements ActionListener{
     }
 
     // next or right button action
-    public void nextButton(int processMatrix[][])
+    public void nextButton(int[][] processMatrix)
     {
         panel.removeAll();
         panel.revalidate();
@@ -275,7 +238,19 @@ public class InputWindow extends JFrame implements ActionListener{
         gbc.gridy = 1;
         panel.add(path,gbc);
 
+    }
+    public void readFile(){
+    try{
+        File text = new File("results.txt");
+        Scanner read = new Scanner(text);
+        while(read.hasNextInt()){
+            nextButton();
+        }
+        read.close();
+    }catch(FileNotFoundException e){
+        e.printStackTrace();
 
+        }
     }
 
 }
