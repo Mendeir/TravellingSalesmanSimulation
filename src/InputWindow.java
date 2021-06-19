@@ -4,24 +4,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.Scanner;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 
-public class InputWindow extends JFrame implements ActionListener{
+public class InputWindow extends JFrame implements ActionListener {
 
     guiAlgo process = new guiAlgo();
 
     // array declarations
-    String [] matrixSize = {"3x3","4x4","5x5","6x6"};
+    String[] matrixSize = {"3x3", "4x4", "5x5", "6x6"};
     String[] letters = {"a", "b", "c", "d", "e", "f"};
 
-    int [][] givenMatrix;
-    int [][] processMatrix;
-    int [][] exponents;
-    int [][] checker;
-    boolean [][] markedPoints;
+    int[][] Array;
+    int[][] givenMatrix;
+    int[][] processMatrix;
+    int[][] exponents;
+    int[][] checker;
+    boolean[][] markedPoints;
 
     int buttonCount = 0;
     int row;
@@ -46,24 +44,24 @@ public class InputWindow extends JFrame implements ActionListener{
 
 
     //Constructor
-    InputWindow()
-    {
+    InputWindow() {
+
         // frame design and measurement
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(400,100,500,500);
+        frame.setBounds(400, 100, 500, 500);
         //panel.setLayout(new GridBagLayout());
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.insets = new Insets(5,5,5,5);
+        gbc.insets = new Insets(5, 5, 5, 5);
 
         // Combobox design and simulations
         frame.add(boxSize);
-        boxSize.setBounds(200,20,100,25);
+        boxSize.setBounds(200, 20, 100, 25);
         boxSize.addActionListener(this);
 
         //steps label layout
-        steps.setBounds(110,100,400,50);
-        steps.setFont(new Font("Arial",Font.BOLD,12));
+        steps.setBounds(110, 100, 400, 50);
+        steps.setFont(new Font("Arial", Font.BOLD, 12));
         frame.add(steps);
 
         //buttons size and layout
@@ -73,9 +71,9 @@ public class InputWindow extends JFrame implements ActionListener{
         right.addActionListener(this);
         enter.addActionListener(this);
         left.addActionListener(this);
-        right.setBounds(350,400,80,50);
-        enter.setBounds(200,400,80,50);
-        left.setBounds(50,400,80,50);
+        right.setBounds(350, 400, 80, 50);
+        enter.setBounds(200, 400, 80, 50);
+        left.setBounds(50, 400, 80, 50);
 
         // Add panel and set frame visible
         frame.add(panel);
@@ -99,7 +97,7 @@ public class InputWindow extends JFrame implements ActionListener{
             gridLayout(row, column);
         }
         //enter button action
-        if(e.getSource() == enter){
+        if (e.getSource() == enter) {
 
             buttonCount -= buttonCount;
 
@@ -129,10 +127,10 @@ public class InputWindow extends JFrame implements ActionListener{
                 }
             }
             process.deleteResultsFile();
-            while (!Arrays.deepEquals(processMatrix,checker)) {
+            while (!Arrays.deepEquals(processMatrix, checker)) {
                 System.out.println("Row Minimization");
                 process.rowMinimization(processMatrix);
-                process.storeResultsToFile("Row Minimization",processMatrix);
+                process.storeResultsToFile("Row Minimization", processMatrix);
 
                 System.out.println("Column Minimization");
                 process.columnMinimization(processMatrix);
@@ -140,7 +138,7 @@ public class InputWindow extends JFrame implements ActionListener{
 
                 System.out.println("Reduce Matrix");
                 process.calculatePenalty(processMatrix, exponents);
-                process.reduceMatrix(exponents,markedPoints, processMatrix);
+                process.reduceMatrix(exponents, markedPoints, processMatrix);
                 process.storeResultsToFile("Reduce Matrix", processMatrix);
             }
         }
@@ -148,38 +146,37 @@ public class InputWindow extends JFrame implements ActionListener{
         //right button action
         if (e.getSource() == right) {
 
-
+            nextButton(Array);
         }
 
         //left button action
         if (e.getSource() == left) {
 
 
-
-            }
         }
+    }
 
     // layout for combo box options
-    public void gridLayout(int row, int column){
+    public void gridLayout(int row, int column) {
         txt = new JTextField[row][column];
         panel.removeAll();
         panel.revalidate();
         frame.repaint();
 
-        for(i=0; i<row; i++) {
+        for (i = 0; i < row; i++) {
             for (j = 0; j < column; j++) {
                 if (i != j) {
                     txt[i][j] = new JTextField();
                     gbc.gridx = i;
                     gbc.gridy = j;
-                    txt[i][j].setFont(new Font("Arial",Font.PLAIN,15));
+                    txt[i][j].setFont(new Font("Arial", Font.PLAIN, 15));
                     panel.add(txt[i][j], gbc);
                     txt[i][j].setHorizontalAlignment(JTextField.CENTER);
                 } else {
-                    txt[i][j] = new JTextField("-",3);
+                    txt[i][j] = new JTextField("-", 3);
                     gbc.gridx = i;
                     gbc.gridy = j;
-                    txt[i][j].setFont(new Font("Arial",Font.PLAIN,15));
+                    txt[i][j].setFont(new Font("Arial", Font.PLAIN, 15));
                     panel.add(txt[i][j], gbc);
                     txt[i][j].setHorizontalAlignment(JTextField.CENTER);
                     txt[i][j].setEditable(false);
@@ -189,37 +186,35 @@ public class InputWindow extends JFrame implements ActionListener{
     }
 
     // next or right button action
-    public void nextButton(int[][] processMatrix)
-    {
+    public void nextButton(int[][] Array) {
         panel.removeAll();
         panel.revalidate();
         frame.repaint();
 
         labels = new JLabel[row][column];
-        for(i=0;i<row;i++){
-            for(j=0;j<column;j++){
-                if(i != j)
-                {
-                    labels[i][j] = new JLabel(Integer.toString(processMatrix[i][j]));
+        for (i = 0; i < row; i++) {
+            for (j = 0; j < column; j++) {
+                if (i == j) {
+                    labels[i][j] = new JLabel(Integer.toString(Array[i][j]));
                     gbc.gridx = i;
                     gbc.gridy = j;
-                    labels[i][j].setFont(new Font("Arial",Font.BOLD,25));
-                    panel.add(labels[i][j],gbc);
+                    labels[i][j].setFont(new Font("Arial", Font.PLAIN, 25));
+                    panel.add(labels[i][j], gbc);
+                } else {
+                    labels[i][j] = new JLabel(Integer.toString(Array[i][j]));
+                    gbc.gridx = j;
+                    gbc.gridy = i;
+                    labels[i][j].setFont(new Font("Arial", Font.BOLD, 25));
+                    panel.add(labels[i][j], gbc);
                     labels[i][j].setHorizontalAlignment(JLabel.CENTER);
-                }else
-                {
-                    labels[i][j] = new JLabel("-");
-                    gbc.gridx = i;
-                    gbc.gridy = j;
-                    labels[i][j].setFont(new Font("Arial",Font.PLAIN,25));
-                    panel.add(labels[i][j],gbc);
+
                 }
             }
         }
 
     }
 
-    public void displayCost(){
+    public void displayCost() {
         panel.removeAll();
         panel.revalidate();
         frame.repaint();
@@ -227,30 +222,17 @@ public class InputWindow extends JFrame implements ActionListener{
         cost = new JLabel(process.calculateTotalCost(markedPoints, givenMatrix));
         path = new JLabel(process.calculatePath(letters, markedPoints));
 
-        path.setFont(new Font("Arial",Font.BOLD,25));
-        cost.setFont(new Font("Arial",Font.BOLD,25));
+        path.setFont(new Font("Arial", Font.BOLD, 25));
+        cost.setFont(new Font("Arial", Font.BOLD, 25));
 
-        gbc.gridx =0;
-        gbc.gridy =0;
-        panel.add(cost,gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(cost, gbc);
 
         gbc.gridx = 0;
         gbc.gridy = 1;
-        panel.add(path,gbc);
+        panel.add(path, gbc);
 
     }
-    public void readFile(){
-    try{
-        File text = new File("results.txt");
-        Scanner read = new Scanner(text);
-        while(read.hasNextInt()){
-            nextButton();
-        }
-        read.close();
-    }catch(FileNotFoundException e){
-        e.printStackTrace();
-
-        }
-    }
-
 }
+
