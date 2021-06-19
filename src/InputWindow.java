@@ -7,7 +7,7 @@ import java.util.*;
 
 public class InputWindow extends JFrame implements ActionListener{
 
-    guiAlgo process = new guiAlgo();
+    GuiAlgo process = new GuiAlgo();
 
     // array declarations
     String [] matrixSize = {"3x3","4x4","5x5","6x6"};
@@ -47,7 +47,6 @@ public class InputWindow extends JFrame implements ActionListener{
         // frame design and measurement
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setBounds(400,100,500,500);
-        //panel.setLayout(new GridBagLayout());
         panel.setLayout(new GridBagLayout());
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(5,5,5,5);
@@ -82,13 +81,11 @@ public class InputWindow extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
 
-
         // box size action
         if (e.getSource() == boxSize) {
 
             // Get the user's wanted size form the comboBox
             String size = (String) boxSize.getSelectedItem();
-
             String[] s = size.split("x");
             row = Integer.parseInt(s[0]);
             column = Integer.parseInt(s[1]);
@@ -96,7 +93,7 @@ public class InputWindow extends JFrame implements ActionListener{
         }
         //enter button action
         if(e.getSource() == enter){
-
+        try {
             buttonCount -= buttonCount;
 
             givenMatrix = new int[row][column];
@@ -123,6 +120,9 @@ public class InputWindow extends JFrame implements ActionListener{
                         checker[i][j] = -1;
                     }
                 }
+            }
+            }catch (NumberFormatException in){
+                ErrorWindow inputError = new ErrorWindow();
             }
         }
 

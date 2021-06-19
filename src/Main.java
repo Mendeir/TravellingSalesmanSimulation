@@ -7,30 +7,26 @@ public class Main {
         //Calling the InputWindow class for Graphical User Interface
         InputWindow window = new InputWindow();
 
-        guiAlgo travellingSalesmanProblem = new guiAlgo();
+        GuiAlgo travellingSalesmanProblem = new GuiAlgo();
         travellingSalesmanProblem.deleteResultsFile();
 
         while (!travellingSalesmanProblem.displayMatrix()) {
             System.out.println("Row Minimization");
-            travellingSalesmanProblem.rowMinimization();
+            travellingSalesmanProblem.rowMinimization(window.processMatrix);
             travellingSalesmanProblem.displayMatrix();
             travellingSalesmanProblem.storeResultsToFile("Row Minimization");
 
             System.out.println("Column Minimization");
-            travellingSalesmanProblem.columnMinimization();
+            travellingSalesmanProblem.columnMinimization(window.processMatrix);
             travellingSalesmanProblem.displayMatrix();
             travellingSalesmanProblem.storeResultsToFile("Column Minimization");
 
             System.out.println("Reduce Matrix");
-            travellingSalesmanProblem.calculatePenalty();
-            travellingSalesmanProblem.reduceMatrix();
+            travellingSalesmanProblem.calculatePenalty(window.processMatrix, window.exponents);
+            travellingSalesmanProblem.reduceMatrix(window.exponents, window.markedPoints, window.processMatrix);
             travellingSalesmanProblem.storeResultsToFile("Reduce Matrix");
         }
 
-        System.out.println(travellingSalesmanProblem.calculatePath());
-        System.out.println();
-        System.out.println("Total Cost: " + travellingSalesmanProblem.calculateTotalCost());
-
-    }
     }
 }
+
