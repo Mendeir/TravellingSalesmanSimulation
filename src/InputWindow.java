@@ -7,23 +7,26 @@ import java.util.*;
 
 
 public class InputWindow extends JFrame implements ActionListener {
-
+    //calling GuiAlgo class
     GuiAlgo process = new GuiAlgo();
+    // for iterating 3d Matrix
     public static int processCounter = 0;
+    //declaration of 3d matrix
     int[][][] matrix3D;
 
     // array declarations
     String[] matrixSize = {"3x3", "4x4", "5x5", "6x6"};
     String[] letters = {"a", "b", "c", "d", "e", "f"};
-
+    // 2d array declaration
     int[][] givenMatrix;
     int[][] processMatrix;
     int[][] exponents;
     int[][] checker;
     boolean[][] markedPoints;
-
+    // declaration for array rows and column
     int row;
     int column;
+    // for iteration
     int i = 0;
     int j = 0;
 
@@ -35,11 +38,11 @@ public class InputWindow extends JFrame implements ActionListener {
     JButton enter = new JButton("ENTER");
     JButton left = new JButton("<<");
     JLabel steps = new JLabel("Enter numbers in designated rows and columns:");
-
     JLabel cost;
     JLabel path;
     JTextField[][] txt;
     JLabel[][] labels;
+    // format used in displaying matrix
     GridBagConstraints gbc = new GridBagConstraints();
 
     //Constructor
@@ -96,7 +99,9 @@ public class InputWindow extends JFrame implements ActionListener {
         }
         //enter button action
         if (e.getSource() == enter) {
+            // try catch for error handling
             try {
+                //array initialization
                 givenMatrix = new int[row][column];
                 processMatrix = new int[row][column];
                 exponents = new int[row][column];
@@ -123,10 +128,15 @@ public class InputWindow extends JFrame implements ActionListener {
                     }
                 }
             }catch(Exception in) {
+                // calling the ErrorWindow class
                 ErrorWindow error = new ErrorWindow();
             }
+            // method for displaying the given matrix
             displayGivenMatrix(processMatrix);
+            // calling the deleteResultsFile for file deletion and creation
             process.deleteResultsFile();
+            // the loop will stop if processMatrix is equivalent to checker which is a storage of -1
+            // process of solving the Travelling Salesman Problem
             while (!Arrays.deepEquals(processMatrix, checker)) {
                 System.out.println("Row Minimization");
                 process.rowMinimization(processMatrix);
@@ -148,15 +158,17 @@ public class InputWindow extends JFrame implements ActionListener {
 
         //right button action
         if (e.getSource() == right) {
+            // for clearing the panel
             panel.removeAll();
             panel.revalidate();
             frame.repaint();
-
+            // set limits for displaying the 3d Matrix
             if(processCounter != row*3) {
+                //call the method in displaying the step by step process
                 nextButton(matrix3D);
                 processCounter++;
             }else{
-                displayCost();
+                displayCost(); // call the method for displaying path and cost
             }
 
         }
@@ -164,7 +176,7 @@ public class InputWindow extends JFrame implements ActionListener {
         //left button action
         if (e.getSource() == left) {
             processCounter--;
-            nextButton(matrix3D);
+            nextButton(matrix3D); // display the previous 3d matrix
         }
     }
 
@@ -203,7 +215,7 @@ public class InputWindow extends JFrame implements ActionListener {
         panel.revalidate();
         frame.repaint();
 
-
+        // display text that would match the process stored in a 3d array
         if(processCounter == 0 || processCounter == 3 || processCounter == 6 || processCounter == 9 || processCounter == 12 || processCounter == 15) {
             steps.setText("Row Minimization");
             steps.setBounds(195, 100, 400, 50);
@@ -221,7 +233,7 @@ public class InputWindow extends JFrame implements ActionListener {
             steps.setBounds(150, 100, 400, 50);
             steps.setFont(new Font("Arial", Font.BOLD, 12));
         }
-
+        // displaying the 3d matrix
         labels = new JLabel[row][column];
         for (i = 0; i < matrix3D[processCounter].length; i++) {
             for (j = 0; j < matrix3D[processCounter][i].length; j++) {
@@ -244,7 +256,7 @@ public class InputWindow extends JFrame implements ActionListener {
         }
 
     }
-
+    // displaying path and cost of travelling salesman problem
     public void displayCost() {
         panel.removeAll();
         panel.revalidate();
@@ -265,6 +277,7 @@ public class InputWindow extends JFrame implements ActionListener {
         panel.add(path, gbc);
 
     }
+    // displaying the entered matrix by user
     public void displayGivenMatrix(int[][] givenMatrix){
         panel.removeAll();
         panel.revalidate();
