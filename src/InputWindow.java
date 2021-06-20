@@ -96,31 +96,34 @@ public class InputWindow extends JFrame implements ActionListener {
         }
         //enter button action
         if (e.getSource() == enter) {
+            try {
+                givenMatrix = new int[row][column];
+                processMatrix = new int[row][column];
+                exponents = new int[row][column];
+                markedPoints = new boolean[row][column];
+                checker = new int[row][column];
+                matrix3D = new int[row * 3][row][column];
 
-            givenMatrix = new int[row][column];
-            processMatrix = new int[row][column];
-            exponents = new int[row][column];
-            markedPoints = new boolean[row][column];
-            checker = new int[row][column];
-            matrix3D = new int[row*3][row][column];
-
-            // Get all value on each textFields
-            for (i = 0; i < row; i++) {
-                for (j = 0; j < column; j++) {
-                    if (i != j) {
-                        givenMatrix[i][j] = Integer.parseInt(txt[i][j].getText());
-                        processMatrix[i][j] = givenMatrix[i][j];
-                        exponents[i][j] = 0;
-                        markedPoints[i][j] = false;
-                        checker[i][j] = -1;
-                    } else {
-                        givenMatrix[i][j] = -1;
-                        processMatrix[i][j] = givenMatrix[i][j];
-                        exponents[i][j] = 0;
-                        markedPoints[i][j] = false;
-                        checker[i][j] = -1;
+                // Get all value on each textFields
+                for (i = 0; i < row; i++) {
+                    for (j = 0; j < column; j++) {
+                        if (i != j) {
+                            givenMatrix[i][j] = Integer.parseInt(txt[i][j].getText());
+                            processMatrix[i][j] = givenMatrix[i][j];
+                            exponents[i][j] = 0;
+                            markedPoints[i][j] = false;
+                            checker[i][j] = -1;
+                        } else {
+                            givenMatrix[i][j] = -1;
+                            processMatrix[i][j] = givenMatrix[i][j];
+                            exponents[i][j] = 0;
+                            markedPoints[i][j] = false;
+                            checker[i][j] = -1;
+                        }
                     }
                 }
+            }catch(Exception in) {
+                ErrorWindow error = new ErrorWindow();
             }
             displayGivenMatrix(processMatrix);
             process.deleteResultsFile();
