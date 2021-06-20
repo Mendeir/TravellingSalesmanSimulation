@@ -1,49 +1,10 @@
-import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.IOException;
+import java.io.File;
 
 public class GuiAlgo {
-
-    public boolean displayMatrix() {
-        boolean isMatrixNull = true;
-        for (int[] rowValues : processMatrix) {
-            isMatrixNull = true;
-            for (int colValues : rowValues) {
-                if (colValues == -1) {
-                    System.out.print("-" + " ");
-                }
-                else {
-                    System.out.print(colValues + " ");
-                    isMatrixNull = false;
-                }
-            }
-            System.out.println();
-        }
-
-        return isMatrixNull;
-    }
-
-    public void displayExponents() {
-        for (int[] rowValues : exponents) {
-            for (int colValues : rowValues) {
-                if (colValues == -1)
-                    System.out.print("-" + " ");
-                else
-                    System.out.print(colValues + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    public void displayMarkedPoints() {
-        for (boolean[] rowValues : markedPoints) {
-            for (boolean colValues : rowValues) {
-                System.out.print(colValues + " ");
-            }
-            System.out.println();
-        }
-    }
+    public static int processCounter = 0;
 
     public void rowMinimization(int[][] processMatrix) {
         for (int rowCounter = 0; rowCounter < processMatrix.length; ++rowCounter) {
@@ -255,7 +216,7 @@ public class GuiAlgo {
             System.out.println("Failed to delete file please try again");
     }
 
-    public void storeResultsToFile(String processName) {
+    public void storeResultsToFile(String processName, int[][] processMatrix) {
         try {
             FileWriter fileWriter = new FileWriter("results.txt", true);
             PrintWriter matrixWriter = new PrintWriter(fileWriter);
@@ -272,6 +233,27 @@ public class GuiAlgo {
             matrixWriter.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+    public void storeResults(int[][][] matrix3D, int[][] processMatrix) {
+        for (int rowCounter = 0; rowCounter < matrix3D[processCounter].length; ++rowCounter) {
+            for (int colCounter = 0; colCounter < matrix3D[processCounter][rowCounter].length; ++colCounter) {
+                matrix3D[processCounter][rowCounter][colCounter] = processMatrix[rowCounter][colCounter];
+            }
+        }
+
+        ++processCounter;
+    }
+
+    public void displayResult(int[][][] matrix3D) {
+        for (int array2DIndex = 0; array2DIndex < matrix3D.length; ++array2DIndex) {
+            for (int rowCounter = 0; rowCounter < matrix3D[array2DIndex].length; ++ rowCounter) {
+                for (int colCounter = 0; colCounter < matrix3D[array2DIndex][rowCounter].length; ++colCounter) {
+                    System.out.print(matrix3D[array2DIndex][rowCounter][colCounter] + " ");
+                }
+                System.out.println();
+            }
+            System.out.println();
         }
     }
 }
